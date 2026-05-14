@@ -1,0 +1,1234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sailing Governance Flow — World Sailing, MNAs, NOCs, IOC</title>
+<style>
+  :root {
+    --ink: #0f172a;
+    --ink-soft: #334155;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --bg: #fafaf7;
+    --panel: #ffffff;
+
+    --ioc: #1e3a8a;
+    --ioc-tint: #e0e7ff;
+    --ws: #0891b2;
+    --ws-tint: #cffafe;
+    --cont: #c2410c;
+    --cont-tint: #fed7aa;
+    --mna: #15803d;
+    --mna-tint: #d1fae5;
+    --noc: #7c3aed;
+    --noc-tint: #ede9fe;
+    --athlete: #475569;
+    --athlete-tint: #e2e8f0;
+
+    --confirmed: #16a34a;
+    --practice:  #ca8a04;
+    --varies:    #6b7280;
+    --open:      #dc2626;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+  /* Top nav */
+  nav.top {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: saturate(150%) blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.top .row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0; gap: 12px; flex-wrap: wrap;
+  }
+  nav.top .brand { font-weight: 700; letter-spacing: -0.01em; font-size: 14px; }
+  nav.top .brand span { color: var(--muted); font-weight: 500; }
+  nav.top ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 4px; flex-wrap: wrap; }
+  nav.top a {
+    display: inline-block;
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 12.5px;
+    padding: 6px 10px;
+    border-radius: 6px;
+  }
+  nav.top a:hover { background: var(--line); color: var(--ink); }
+
+  /* Hero */
+  header.hero {
+    padding: 56px 0 32px;
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, #fff 0%, var(--bg) 100%);
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  h1 {
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 12px 0 16px;
+    max-width: 22ch;
+  }
+  .lede {
+    font-size: 16.5px;
+    color: var(--ink-soft);
+    max-width: 78ch;
+    margin: 0 0 24px;
+  }
+
+  /* Confidence legend */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 8px 16px;
+    padding: 14px 16px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .legend strong { color: var(--ink); margin-right: 6px; }
+  .dot {
+    display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+    margin-right: 6px; vertical-align: middle;
+  }
+  .dot.confirmed { background: var(--confirmed); }
+  .dot.practice  { background: var(--practice);  }
+  .dot.varies    { background: var(--varies);    }
+  .dot.open      { background: var(--open);      }
+
+  /* Sections */
+  section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: 0; }
+  h2 {
+    font-size: clamp(22px, 2.6vw, 30px);
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+  }
+  h2 .num {
+    color: var(--muted);
+    font-weight: 500;
+    margin-right: 10px;
+    font-variant-numeric: tabular-nums;
+  }
+  .sub {
+    color: var(--ink-soft);
+    max-width: 78ch;
+    margin: 0 0 28px;
+    font-size: 15px;
+  }
+  h3 {
+    font-size: 16px;
+    margin: 0 0 6px;
+    letter-spacing: -0.005em;
+  }
+  p { margin: 0 0 10px; }
+  p.small { font-size: 13px; color: var(--ink-soft); }
+
+  /* Hierarchy diagram */
+  .hierarchy {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+  .stack {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px;
+  }
+  .stack h4 {
+    margin: 0 0 12px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+  .node {
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 14.5px;
+    letter-spacing: 0.01em;
+  }
+  .node small {
+    display: block;
+    font-weight: 500;
+    font-size: 12px;
+    opacity: 0.88;
+    margin-top: 2px;
+  }
+  .node.ioc      { background: var(--ioc); }
+  .node.ws       { background: var(--ws); }
+  .node.cont     { background: var(--cont); }
+  .node.mna      { background: var(--mna); }
+  .node.noc      { background: var(--noc); }
+  .node.athlete  { background: var(--athlete); }
+
+  .arrow {
+    display: flex; align-items: center; justify-content: center;
+    height: 24px; color: var(--muted);
+  }
+  .arrow svg { width: 18px; height: 18px; }
+
+  .cross {
+    grid-column: 1 / -1;
+    background: var(--panel);
+    border: 1px dashed var(--line);
+    border-radius: 12px;
+    padding: 14px 18px;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+  }
+  .cross strong { color: var(--ink); }
+
+  /* Org cards */
+  .org-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+  }
+  .org {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 0;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .org .head {
+    padding: 14px 16px;
+    color: #fff;
+  }
+  .org .head .tag {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.88;
+    margin-bottom: 4px;
+  }
+  .org .head h3 { color: #fff; margin: 0; font-size: 18px; }
+  .org .head h3 small { font-weight: 500; opacity: 0.85; font-size: 12.5px; display: block; margin-top: 2px; }
+  .org.ioc  .head { background: var(--ioc); }
+  .org.ws   .head { background: var(--ws); }
+  .org.cont .head { background: var(--cont); }
+  .org.mna  .head { background: var(--mna); }
+  .org.noc  .head { background: var(--noc); }
+  .org .body { padding: 14px 16px 16px; font-size: 13.5px; }
+  .org dl { margin: 0; }
+  .org dt {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-top: 10px;
+    font-weight: 600;
+  }
+  .org dt:first-child { margin-top: 0; }
+  .org dd { margin: 4px 0 0; color: var(--ink-soft); }
+  .cite {
+    display: inline-block;
+    font-size: 11px;
+    background: #f1f5f9;
+    color: var(--muted);
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-left: 4px;
+    font-variant-numeric: tabular-nums;
+    vertical-align: 1px;
+  }
+
+  /* Matrix */
+  .matrix-wrap {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: auto;
+  }
+  table.matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-width: 980px;
+  }
+  table.matrix th, table.matrix td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.matrix thead th {
+    background: #f8fafc;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0;
+  }
+  table.matrix tr.group td {
+    background: #f8fafc;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+  table.matrix td .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+  .pill.ioc  { background: var(--ioc-tint);  color: var(--ioc);  }
+  .pill.ws   { background: var(--ws-tint);   color: var(--ws);   }
+  .pill.cont { background: var(--cont-tint); color: var(--cont); }
+  .pill.mna  { background: var(--mna-tint);  color: var(--mna);  }
+  .pill.noc  { background: var(--noc-tint);  color: var(--noc);  }
+  .pill.varies { background: #f1f5f9; color: var(--muted); }
+
+  /* Pathway */
+  .pathway {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .stage {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .stage .step {
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .stage .step .label {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .who { font-size: 12.5px; color: var(--ink-soft); }
+  .who .pill { margin: 2px 4px 2px 0; }
+  .stage .note {
+    grid-column: 1 / -1;
+    margin-top: 6px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--line);
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .stage-divider {
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+    padding: 2px 0;
+  }
+
+  /* Under 18 + questions */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .panel + .panel { margin-top: 14px; }
+  .panel h3 { font-size: 15.5px; }
+  .panel ul { padding-left: 18px; margin: 8px 0; }
+  .panel li { margin: 6px 0; }
+  .qa {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 14px;
+    padding: 16px 18px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--panel);
+    margin-bottom: 12px;
+  }
+  .qa .qnum {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--ioc);
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .qa .qbody h4 { margin: 4px 0 6px; font-size: 14.5px; }
+  .qa .qbody p { font-size: 13px; color: var(--ink-soft); margin: 0; }
+
+  /* Scenario */
+  .scenario-card {
+    background: linear-gradient(180deg, #fff 0%, #fef9c3 100%);
+    border: 1px solid #fde68a;
+    border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .scenario-card h3 { color: #854d0e; }
+  .scenario-card p { color: #713f12; font-size: 14px; }
+  .takeaways {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .take {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 13.5px;
+  }
+  .take .head {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  /* Conf badges */
+  .conf {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: 600;
+    padding: 1px 8px;
+    border-radius: 999px;
+    margin-right: 4px;
+    vertical-align: 1px;
+    line-height: 1.6;
+  }
+  .conf.confirmed { background: #dcfce7; color: #166534; }
+  .conf.practice  { background: #fef3c7; color: #854d0e; }
+  .conf.varies    { background: #f1f5f9; color: #475569; }
+  .conf.open      { background: #fee2e2; color: #991b1b; }
+
+  footer {
+    padding: 36px 0 56px;
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+  footer a { color: var(--ws); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* Responsive */
+  @media (max-width: 760px) {
+    .hierarchy { grid-template-columns: 1fr; }
+    .stage { grid-template-columns: 1fr; }
+  }
+
+  /* Print */
+  @media print {
+    nav.top { display: none; }
+    section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="container row">
+    <div class="brand">Sailing Governance Flow <span>— a board-ready system map</span></div>
+    <ul>
+      <li><a href="#hierarchy">Hierarchy</a></li>
+      <li><a href="#orgs">Organizations</a></li>
+      <li><a href="#matrix">Event Matrix</a></li>
+      <li><a href="#pathway">Athlete Pathway</a></li>
+      <li><a href="#under18">Under-18</a></li>
+      <li><a href="#questions">Questions for WS</a></li>
+      <li><a href="#scenario">Scenario Application</a></li>
+      <li><a href="#sources">Sources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="eyebrow">Executive Briefing · International Sailing Governance</div>
+    <h1>How World Sailing, MNAs, and Olympic Committees Intersect Across Athlete Eligibility and Competition Pathways</h1>
+    <p class="lede">
+      A neutral, globally applicable model of how authority is distributed between the IOC, World Sailing,
+      continental confederations, Member National Authorities (MNAs / NGBs), and National Olympic Committees (NOCs) —
+      and how those lines shift between routine training, sanctioned competition, and Games representation.
+      Built from primary sources. Confirmed facts are separated from common practice and from open questions.
+    </p>
+    <div class="legend">
+      <strong>Confidence:</strong>
+      <span><span class="dot confirmed"></span>Confirmed — cite-able in a primary document</span>
+      <span><span class="dot practice"></span>Common international practice — typical but not necessarily codified</span>
+      <span><span class="dot varies"></span>Varies by federation or local bylaw</span>
+      <span><span class="dot open"></span>Open question — requires clarification from World Sailing</span>
+    </div>
+  </div>
+</header>
+
+<!-- =============== HIERARCHY =============== -->
+<section id="hierarchy">
+  <div class="container">
+    <h2><span class="num">01</span>Governance Hierarchy</h2>
+    <p class="sub">
+      Two parallel chains of authority — the <strong>Sport chain</strong> (IOC → IF → MNA → clubs/athletes)
+      and the <strong>Olympic chain</strong> (IOC → NOC → Games representation). They are distinct.
+      They intersect only at specific points, principally at Games selection and at nationality decisions.
+    </p>
+
+    <div class="hierarchy">
+      <!-- Sport chain -->
+      <div class="stack">
+        <h4>Sport Chain — authority over the sport</h4>
+        <div class="node ioc">
+          IOC
+          <small>Recognises the IF · sets Olympic-eligibility framework</small>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M5 13l7 7 7-7"/></svg></div>
+        <div class="node ws">
+          World Sailing (IF)
+          <small>One recognised MNA per country · owns the Eligibility Code · sanctions World/Continental titles</small>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M5 13l7 7 7-7"/></svg></div>
+        <div class="node mna">
+          MNA / NGB <em style="opacity:.85;font-weight:500">(e.g. US Sailing, VISA, RYA)</em>
+          <small>Membership · domestic sanctioning · enters competitors into WS events</small>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M5 13l7 7 7-7"/></svg></div>
+        <div class="node athlete">
+          Clubs · Class associations · Athletes
+          <small>Daily training, club racing, qualifying regattas</small>
+        </div>
+      </div>
+
+      <!-- Olympic chain -->
+      <div class="stack">
+        <h4>Olympic Chain — authority over Games representation</h4>
+        <div class="node ioc">
+          IOC
+          <small>Owns the Olympic Charter · recognises the NOC · sets Rule 41 (nationality)</small>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M5 13l7 7 7-7"/></svg></div>
+        <div class="node cont">
+          Continental Body <em style="opacity:.85;font-weight:500">(Panam Sports · CAC · etc.)</em>
+          <small>Owns Pan Am / CAC / Junior Pan Am Games · own nationality rules mirror Rule 41</small>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M5 13l7 7 7-7"/></svg></div>
+        <div class="node noc">
+          NOC <em style="opacity:.85;font-weight:500">(e.g. USOPC, VIOC, BOA)</em>
+          <small>Exclusive authority to enter the country at Games · approves athlete delegation</small>
+        </div>
+        <div class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M5 13l7 7 7-7"/></svg></div>
+        <div class="node athlete">
+          Athlete · Games Delegation
+          <small>Olympic Games · Pan American Games · CAC Games · Youth Olympic Games</small>
+        </div>
+      </div>
+
+      <div class="cross">
+        <strong>Where the chains intersect.</strong>
+        (1) At <em>Games entry</em>: the NOC enters the athlete into the Olympic/Pan Am/CAC/YOG, but only on the proposal of the MNA and only if WS / the IF certifies eligibility.
+        (2) At <em>nationality changes</em>: a transfer between countries requires agreement from both NOCs <em>and</em> the IF, with the IOC/Panam Sports Executive Board as final approver.
+        (3) At <em>shared anti-doping and SafeSport obligations</em>: WADA Code and IOC ethics standards bind both chains.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============== ORG CARDS =============== -->
+<section id="orgs">
+  <div class="container">
+    <h2><span class="num">02</span>The Five Governance Actors</h2>
+    <p class="sub">
+      Each box below describes one actor: its purpose, the source of its authority, who it governs, what events it controls, and
+      whether it touches participation, eligibility, selection, nationality, residency, or competition.
+    </p>
+
+    <div class="org-grid">
+
+      <!-- IOC -->
+      <article class="org ioc">
+        <div class="head">
+          <div class="tag">Apex of the Olympic Movement</div>
+          <h3>International Olympic Committee (IOC)
+            <small>Established 1894 · Lausanne, Switzerland</small>
+          </h3>
+        </div>
+        <div class="body">
+          <dl>
+            <dt>Purpose</dt>
+            <dd>Supreme authority of the Olympic Movement; owner of the Olympic Charter; owner of the Olympic Games.</dd>
+
+            <dt>Authority over</dt>
+            <dd>
+              <span class="conf confirmed">Confirmed</span>
+              Recognising IFs (World Sailing) and NOCs (e.g. USOPC, VIOC); approving nationality changes for the Olympic Games under Rule 41<span class="cite">Olympic Charter Rule 41</span>.
+            </dd>
+
+            <dt>Governs (directly)</dt>
+            <dd>NOCs · IFs · the Olympic Games and Youth Olympic Games.</dd>
+
+            <dt>Events controlled</dt>
+            <dd>Summer and Winter Olympic Games · Youth Olympic Games · IOC-patronised Regional Games.</dd>
+
+            <dt>Touches athlete eligibility?</dt>
+            <dd>
+              <span class="conf confirmed">Confirmed</span>
+              Only for Olympic / Youth Olympic Games. <em>Rule 41:</em> athlete must be a national of the NOC entering them; 3-year wait after representing another country at Olympics / regional games / IF world or regional championships — IOC Executive Board may reduce or waive with NOC + IF agreement<span class="cite">Bye-law to Rule 41 §2</span>.
+            </dd>
+
+            <dt>Touches MNA participation?</dt>
+            <dd><span class="conf varies">No direct authority</span> outside Games-eligibility nationality rules. Day-to-day MNA participation is not governed by the IOC.</dd>
+          </dl>
+        </div>
+      </article>
+
+      <!-- World Sailing -->
+      <article class="org ws">
+        <div class="head">
+          <div class="tag">International Federation for Sailing</div>
+          <h3>World Sailing
+            <small>Recognised by the IOC as the sole IF for sailing</small>
+          </h3>
+        </div>
+        <div class="body">
+          <dl>
+            <dt>Purpose</dt>
+            <dd>Worldwide governance of the sport of sailing: rules of racing, classes, eligibility, world-title events, Olympic qualification.</dd>
+
+            <dt>Authority over</dt>
+            <dd>
+              <span class="conf confirmed">Confirmed</span>
+              Recognises one MNA per country<span class="cite">WS Constitution / Reg.</span>; owns the <em>Eligibility Code</em> (Regulation 19); appoints international juries / umpires / officials for events under its sanction.
+            </dd>
+
+            <dt>Governs (directly)</dt>
+            <dd>MNAs · WS classes · WS-titled events · Olympic Sailing Competition (in coordination with the IOC).</dd>
+
+            <dt>Events controlled</dt>
+            <dd>The Olympic Sailing Competition · World Championships of Olympic classes · the Youth Sailing World Championships · Continental Championships (for sanction purposes) · "World Sailing" titled events.</dd>
+
+            <dt>Touches athlete eligibility?</dt>
+            <dd>
+              <span class="conf confirmed">Confirmed</span>
+              <em>Reg. 19.4:</em> "WS Eligibility" requires MNA membership + WS Sailor registration + acceptance of WS regulations.
+              <em>Reg. 19.10:</em> The country a competitor represents is the country of the MNA that entered them.
+              <em>Reg. 19.14:</em> A competitor under 16 is not regarded as having represented a country.
+              <em>Reg. 19.15:</em> 3-year wait for transfer; WS Board may reduce/cancel with agreement of MNAs concerned.
+            </dd>
+
+            <dt>Touches NOC participation?</dt>
+            <dd>
+              <span class="conf practice">Common practice</span>
+              At Games, the NOC enters athletes but only those proposed by the MNA and certified WS-eligible. WS does not control the NOC's internal delegation decisions.
+            </dd>
+          </dl>
+        </div>
+      </article>
+
+      <!-- Continental body -->
+      <article class="org cont">
+        <div class="head">
+          <div class="tag">Continental Olympic confederation</div>
+          <h3>Continental Body
+            <small>e.g. Panam Sports · CACSO · OCA · EOC · ANOCA</small>
+          </h3>
+        </div>
+        <div class="body">
+          <dl>
+            <dt>Purpose</dt>
+            <dd>Operates continental and sub-regional multi-sport Games under IOC patronage. Owns the Pan American Games, Junior Pan American Games, CAC Games.</dd>
+
+            <dt>Authority over</dt>
+            <dd>
+              <span class="conf confirmed">Confirmed</span>
+              <em>Panam Sports Constitution §34.4–34.7:</em> Competitor must be a national of the NOC entering them; 3-year wait after representing another country at Pan Am / Olympic Games / IF world or regional championships — Panam Sports Executive Board may reduce/waive with NOC + Confederation agreement.
+            </dd>
+
+            <dt>Governs (directly)</dt>
+            <dd>NOCs of its continent · the continental Sport Confederations (e.g. PASAF for sailing).</dd>
+
+            <dt>Events controlled</dt>
+            <dd>Pan American Games (17–22 in Junior edition, year of birth-defined) · Junior Pan American Games · CAC Games · CAC Junior Games · their qualification regattas.</dd>
+
+            <dt>Touches eligibility?</dt>
+            <dd>Yes — for its own Games only. Mirrors Rule 41 in structure.</dd>
+
+            <dt>Touches MNA participation?</dt>
+            <dd><span class="conf varies">No</span> direct authority over MNA-internal participation.</dd>
+          </dl>
+        </div>
+      </article>
+
+      <!-- MNA -->
+      <article class="org mna">
+        <div class="head">
+          <div class="tag">Member National Authority / NGB</div>
+          <h3>MNA <em style="font-weight:500;opacity:.9">(e.g. VISA, US Sailing)</em>
+            <small>The recognised national federation for sailing in its territory</small>
+          </h3>
+        </div>
+        <div class="body">
+          <dl>
+            <dt>Purpose</dt>
+            <dd>National governance of the sport: membership, domestic racing, athlete development, ranking, selection for international events.</dd>
+
+            <dt>Authority over</dt>
+            <dd>
+              <span class="conf confirmed">Confirmed</span>
+              Membership of clubs and individual sailors; sanctioning domestic events; <em>entering competitors</em> into World Sailing events (the entry act establishes the country a sailor represents — WS Reg. 19.10).
+              <span class="conf varies">Varies</span> over residency, eligibility, transfer — most MNA bylaws delegate to WS Reg. 19, but the recognised MNA may impose additional internal selection criteria.
+            </dd>
+
+            <dt>Governs (directly)</dt>
+            <dd>Member clubs · class associations · individual members · domestic regattas.</dd>
+
+            <dt>Events controlled</dt>
+            <dd>National Championships · MNA-sanctioned regattas · MNA-designated trial / Olympic-qualifying events within its jurisdiction.</dd>
+
+            <dt>Touches eligibility / selection?</dt>
+            <dd>
+              <span class="conf confirmed">Confirmed (for the sport chain)</span>
+              <em>VISA Bylaws §3.3, 3.5:</em> maintain Full Member status with World Sailing and respect its rules.
+              <em>VISA Bylaws §3.8:</em> may arrange and conduct races.
+              VISA bylaws do <strong>not</strong> impose citizenship or residency requirements on individual sailors.
+              <span class="conf open">Open</span> — selection authority for Games-pathway events is typically a joint MNA/NOC matter and varies.
+            </dd>
+
+            <dt>Touches NOC representation?</dt>
+            <dd>The MNA <em>proposes</em> athletes to the NOC for Games. The NOC decides the entry.</dd>
+          </dl>
+        </div>
+      </article>
+
+      <!-- NOC -->
+      <article class="org noc">
+        <div class="head">
+          <div class="tag">National Olympic Committee</div>
+          <h3>NOC <em style="font-weight:500;opacity:.9">(e.g. VIOC, USOPC)</em>
+            <small>The IOC-recognised representative of a territory in the Olympic Movement</small>
+          </h3>
+        </div>
+        <div class="body">
+          <dl>
+            <dt>Purpose</dt>
+            <dd>Develop and protect the Olympic Movement within the territory; lead the national delegation to Games.</dd>
+
+            <dt>Authority over</dt>
+            <dd>
+              <span class="conf confirmed">Confirmed (VIOC bylaws §2.3(b))</span>
+              "Exclusive authority for the representation of the US Virgin Islands at the Olympic Games and at the regional, continental or world multi-sports competitions patronised by the IOC."
+              The list named: Summer and Winter Olympics, Pan American Games, CAC Games, Youth Olympic Games, other Regional Games.
+            </dd>
+
+            <dt>Governs (directly)</dt>
+            <dd>Member national federations (one per sport, §3.1(d)); Games delegations.</dd>
+
+            <dt>Events controlled</dt>
+            <dd>Entry into Olympic Games · Pan American Games · CAC Games · Youth Olympic Games · IOC-patronised Regional Games. The NOC does <strong>not</strong> own World Championships, continental class championships, MNA events, or non-IOC events.</dd>
+
+            <dt>Touches eligibility?</dt>
+            <dd>
+              <span class="conf confirmed">Confirmed (VIOC §9.1(b))</span>
+              Residency for Games representation: born in VI, OR parent born in VI, OR U.S. citizen who has resided 3 years continuously in VI before the Opening Ceremony.
+              <span class="conf confirmed">Confirmed (VIOC §9.1(a) final sentence)</span>
+              <em>"The Executive Committee shall make provisions for those athletes under 18 years of age."</em>
+            </dd>
+
+            <dt>Touches MNA participation?</dt>
+            <dd>
+              <span class="conf open">Open</span> — the bylaws give the NOC exclusive authority over Games representation, not over MNA-level participation in non-Games competition. Whether the NOC's residency rules <em>also</em> condition MNA membership or non-Games WS-event entry is not addressed in the VIOC bylaws and is a key question for World Sailing.
+            </dd>
+          </dl>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============== EVENT MATRIX =============== -->
+<section id="matrix">
+  <div class="container">
+    <h2><span class="num">03</span>Event Ownership Matrix</h2>
+    <p class="sub">
+      Who owns the event, who selects the athlete, who certifies eligibility, and who controls residency / nationality —
+      by event type. Reading across each row makes clear that <strong>the same athlete passes under different
+      authorities depending on the event</strong>.
+    </p>
+    <div class="matrix-wrap">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>Event</th>
+            <th>Primary governing body</th>
+            <th>Selection authority</th>
+            <th>Eligibility authority</th>
+            <th>Residency / nationality authority</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr class="group"><td colspan="6">Domestic / MNA layer</td></tr>
+
+          <tr>
+            <td><strong>Local club racing</strong></td>
+            <td><span class="pill varies">Club / Class</span></td>
+            <td>Club / open entry</td>
+            <td>Club rules</td>
+            <td>None</td>
+            <td>No WS / NOC authority engaged. Open entry within club rules.</td>
+          </tr>
+          <tr>
+            <td><strong>National Championships</strong></td>
+            <td><span class="pill mna">MNA</span></td>
+            <td>MNA</td>
+            <td>MNA membership; class rules; WS Reg. 19.6(h) if so designated</td>
+            <td>Usually MNA discretion</td>
+            <td>If the MNA designates the event under Reg. 19.7, WS Eligibility Code applies in full.</td>
+          </tr>
+          <tr>
+            <td><strong>MNA-sanctioned events</strong></td>
+            <td><span class="pill mna">MNA</span></td>
+            <td>MNA / OA</td>
+            <td>MNA &amp; class rules; WS rules where MNA sanction triggers them</td>
+            <td>MNA discretion</td>
+            <td>WS Reg. 19 nationality clauses (19.8–19.18) <em>do not</em> apply by default — they apply only to Olympic-class world/continental/regional championships and WS Events.</td>
+          </tr>
+
+          <tr class="group"><td colspan="6">Regional / continental layer</td></tr>
+
+          <tr>
+            <td><strong>Regional / Continental Championships (WS class)</strong></td>
+            <td><span class="pill ws">World Sailing</span> + Class</td>
+            <td>MNA enters</td>
+            <td>WS Reg. 19 (full)</td>
+            <td>WS — nationality of MNA that enters (Reg. 19.10)</td>
+            <td>WS Eligibility nationality rules apply. The MNA controls entry; the NOC has no role.</td>
+          </tr>
+          <tr>
+            <td><strong>World Sailing Events (incl. World Champs of Olympic classes)</strong></td>
+            <td><span class="pill ws">World Sailing</span></td>
+            <td>MNA enters</td>
+            <td>WS Reg. 19 (full)</td>
+            <td>WS — Reg. 19.10–19.18; CEO issues residency certificates</td>
+            <td>"World Sailing Eligibility" required: WS ID, MNA membership, agreement to WS regulations.</td>
+          </tr>
+          <tr>
+            <td><strong>Youth Sailing World Championships</strong></td>
+            <td><span class="pill ws">World Sailing</span></td>
+            <td>MNA enters (NoR §3.1, §3.3)</td>
+            <td>WS Eligibility Code (NoR §3.5)</td>
+            <td>WS — nationality of MNA that enters (NoR §3.7); WS Reg. 19.14 — under-16 not deemed to have represented a country</td>
+            <td>Ages 12 to under 19. NOC is not the entrant.</td>
+          </tr>
+
+          <tr class="group"><td colspan="6">Continental / regional Games layer</td></tr>
+
+          <tr>
+            <td><strong>Junior Pan American Games (sailing)</strong></td>
+            <td><span class="pill cont">Panam Sports</span> + <span class="pill ws">WS</span></td>
+            <td>NOC, on MNA proposal</td>
+            <td>WS Eligibility Code + Panam Sports rules</td>
+            <td>Panam Sports §34.4–34.7 (mirrors Rule 41)</td>
+            <td>Ages 17–22 (Asunción 2025: born 2003–2008). Athletes sign Eligibility Condition Form.</td>
+          </tr>
+          <tr>
+            <td><strong>Pan American Games</strong></td>
+            <td><span class="pill cont">Panam Sports</span></td>
+            <td>NOC, on MNA proposal</td>
+            <td>WS + Panam Sports rules</td>
+            <td>Panam Sports §34.4–34.7</td>
+            <td>Counts as "representation" for purposes of IOC Rule 41 and WS Reg. 19.15 transfer rules.</td>
+          </tr>
+          <tr>
+            <td><strong>CAC Games (Central American &amp; Caribbean)</strong></td>
+            <td><span class="pill cont">CACSO</span></td>
+            <td>NOC, on MNA proposal</td>
+            <td>WS + CACSO rules</td>
+            <td>CACSO / IOC patterns</td>
+            <td>One of the events VIOC has exclusive authority over (VIOC §2.3(b)).</td>
+          </tr>
+
+          <tr class="group"><td colspan="6">Top-of-pyramid Games layer</td></tr>
+
+          <tr>
+            <td><strong>Olympic qualification events</strong></td>
+            <td><span class="pill ws">World Sailing</span> (with IOC)</td>
+            <td>MNA enters; NOC ratifies for the Games quota</td>
+            <td>WS Reg. 19 (full)</td>
+            <td>WS at entry; IOC Rule 41 at the Games</td>
+            <td>Qualification places typically attach to the MNA, not to the individual.</td>
+          </tr>
+          <tr>
+            <td><strong>Youth Olympic Games</strong></td>
+            <td><span class="pill ioc">IOC</span></td>
+            <td>NOC, on MNA proposal</td>
+            <td>WS + IOC eligibility</td>
+            <td>IOC Rule 41; NOC residency rules</td>
+            <td>VIOC §2.3(b) lists YOG as an event under VIOC exclusive entry authority.</td>
+          </tr>
+          <tr>
+            <td><strong>Olympic Games</strong></td>
+            <td><span class="pill ioc">IOC</span></td>
+            <td>NOC, on MNA proposal</td>
+            <td>WS + IOC eligibility</td>
+            <td>IOC Rule 41 (3-year wait, NOC + IF agreement, IOC EB approves)</td>
+            <td>Apex event. All four governance actors engaged.</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- =============== ATHLETE PATHWAY =============== -->
+<section id="pathway">
+  <div class="container">
+    <h2><span class="num">04</span>Athlete Pathway Flow</h2>
+    <p class="sub">
+      Every stage is colour-coded by the dominant authority at that stage. The point of the diagram is that
+      <strong>NOC authority does not engage until the Games entry stage</strong> — and that WS authority over nationality
+      engages only at WS-sanctioned championships and Olympic-class regional/continental titles.
+    </p>
+
+    <div class="pathway">
+
+      <div class="stage">
+        <div class="step">
+          <span class="label">Stage 1</span>
+          Athlete &amp; Club
+        </div>
+        <div class="who">
+          <span class="pill varies">Club / class rules</span>
+          The athlete trains and races at their home club under club / class rules.
+        </div>
+        <div class="note">No MNA, WS, NOC, IOC, or continental authority engaged. Open by entry.</div>
+      </div>
+      <div class="stage-divider">↓</div>
+
+      <div class="stage">
+        <div class="step">
+          <span class="label">Stage 2</span>
+          MNA membership
+        </div>
+        <div class="who">
+          <span class="pill mna">MNA controls access</span>
+          The athlete (directly or via a member club) joins the MNA. <em>VISA</em> bylaws §4 admit clubs, organizations, class associations, and individuals "upon payment of dues." No citizenship / residency test in the VISA bylaws themselves.
+        </div>
+        <div class="note">WS Eligibility (Reg. 19.4) requires MNA membership; the MNA does not yet need NOC approval at this stage.</div>
+      </div>
+      <div class="stage-divider">↓</div>
+
+      <div class="stage">
+        <div class="step">
+          <span class="label">Stage 3</span>
+          MNA-sanctioned racing
+        </div>
+        <div class="who">
+          <span class="pill mna">MNA</span>
+          National championships, ranking events, local trials. Eligibility per MNA &amp; class rules.
+        </div>
+        <div class="note">WS Eligibility Code nationality clauses (Reg. 19.8–19.18) do not apply unless the MNA designates the event under Reg. 19.7.</div>
+      </div>
+      <div class="stage-divider">↓</div>
+
+      <div class="stage">
+        <div class="step">
+          <span class="label">Stage 4</span>
+          Regional / Continental championships
+        </div>
+        <div class="who">
+          <span class="pill ws">WS</span> + class associations.
+          MNA enters the athlete. WS Eligibility Code applies in full once the event is an Olympic-class continental / regional championship.
+        </div>
+        <div class="note">Reg. 19.10: the country a competitor represents is the country of the MNA that entered them.</div>
+      </div>
+      <div class="stage-divider">↓</div>
+
+      <div class="stage">
+        <div class="step">
+          <span class="label">Stage 5</span>
+          World Sailing events
+        </div>
+        <div class="who">
+          <span class="pill ws">WS</span>
+          World Championships, Major Events, Youth Sailing Worlds. MNA enters; WS Eligibility required.
+        </div>
+        <div class="note">For under-16 competitors (Reg. 19.14), the athlete is <strong>not deemed to have represented</strong> a country even after competing — preserving future flexibility under Rule 41 and Reg. 19.15.</div>
+      </div>
+      <div class="stage-divider">↓</div>
+
+      <div class="stage">
+        <div class="step">
+          <span class="label">Stage 6</span>
+          Olympic pathway events
+        </div>
+        <div class="who">
+          <span class="pill ws">WS</span> for qualification places; <span class="pill cont">Continental body</span> for Pan Am / CAC selection; <span class="pill noc">NOC</span> begins to engage as Games approach.
+        </div>
+        <div class="note">A qualification place is typically won by the MNA, not by the athlete personally. Selection to fill the place is governed jointly by MNA + NOC selection procedures.</div>
+      </div>
+      <div class="stage-divider">↓</div>
+
+      <div class="stage">
+        <div class="step">
+          <span class="label">Stage 7</span>
+          Games participation
+        </div>
+        <div class="who">
+          <span class="pill noc">NOC enters</span> · <span class="pill ioc">IOC eligibility</span> · <span class="pill ws">WS certifies</span>
+          The NOC has exclusive authority to enter the territory's delegation. The MNA proposes; the NOC decides; WS certifies WS-eligibility; the IOC checks Rule 41 compliance.
+        </div>
+        <div class="note">All four actors converge here. Residency requirements (NOC) and nationality waiting periods (IOC) both must be satisfied at this stage.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============== UNDER 18 =============== -->
+<section id="under18">
+  <div class="container">
+    <h2><span class="num">05</span>Under-18 Athlete Considerations</h2>
+    <p class="sub">
+      Minors typically receive specific protections and carve-outs across the system. The key under-18 levers are
+      international (WS, IOC); local under-18 provisions vary by NOC bylaw.
+    </p>
+
+    <div class="panel">
+      <h3>What is confirmed</h3>
+      <ul>
+        <li>
+          <span class="conf confirmed">Confirmed</span>
+          <strong>WS Regulation 19.14</strong> — <em>"A competitor shall not be regarded as having represented a country unless he is at least 16 years of age at the time."</em> This is the most important under-18 lever in international sailing: it means competition before age 16 does <strong>not</strong> create a "represented country" history that would otherwise trigger Reg. 19.15's 3-year transfer wait or IOC Rule 41's 3-year wait.
+        </li>
+        <li>
+          <span class="conf confirmed">Confirmed</span>
+          <strong>VIOC Bylaws §9.1(a) (final sentence)</strong> — <em>"The Executive Committee shall make provisions for those athletes under 18 years of age."</em> The bylaws explicitly contemplate Executive Committee discretion for minors in respect of residency.
+        </li>
+        <li>
+          <span class="conf confirmed">Confirmed</span>
+          <strong>VISA Bylaws §4.1(e)</strong> recognise "junior" individual members but do not impose distinct eligibility provisions inside the MNA itself.
+        </li>
+        <li>
+          <span class="conf confirmed">Confirmed</span>
+          <strong>Youth Sailing World Championships NoR §3.6 (2026)</strong> — ages 12 to under 19. The MNA enters competitors. No NOC approval is required for the Youth Worlds.
+        </li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h3>Common international practice</h3>
+      <ul>
+        <li>
+          <span class="conf practice">Common practice</span>
+          MNAs and NOCs typically apply a more flexible residency test for minors — recognising that a 12- or 14-year-old's "domicile" follows the parent / guardian, not a 3-year personal clock the minor cannot independently satisfy.
+        </li>
+        <li>
+          <span class="conf practice">Common practice</span>
+          Youth-only events (Optimist Worlds, Class Junior Worlds, Youth Sailing Worlds) are MNA-entered, not NOC-entered. Many NOCs play no role in youth international competition.
+        </li>
+        <li>
+          <span class="conf practice">Common practice</span>
+          Where a youth athlete is a national of the country of the new MNA, transfer in the sport chain at the MNA level is administratively simple. The Games-level eligibility clock is a separate question that runs in parallel.
+        </li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h3>Areas that vary</h3>
+      <ul>
+        <li><span class="conf varies">Varies</span> Whether a specific NOC has published a written youth-specific residency provision (most NOCs delegate to executive discretion as VIOC does).</li>
+        <li><span class="conf varies">Varies</span> Whether an MNA imposes additional internal "selection" criteria above WS Eligibility for youth athletes representing the MNA at WS events.</li>
+        <li><span class="conf varies">Varies</span> Whether continental confederations (Panam Sports, CACSO) treat youth athletes who later age into senior pathways under a separate transition rule.</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h3>Where World Sailing policy <em>does</em> override local interpretation</h3>
+      <ul>
+        <li>For events that fall within Regulation 19.6 (WS events, Olympic Sailing, IOC Regional Games, WS-titled events, world/continental championships of Olympic classes), <strong>WS Eligibility is the binding standard</strong>. The MNA's recognition by WS is the act that establishes the country a sailor represents at those events (Reg. 19.10).</li>
+        <li>For nationality and transfer questions involving a WS event, <strong>WS Reg. 19.18</strong> places the determination with the WS Board; an alleged breach is not grounds for protest under RRS 63.1.</li>
+        <li>For under-16 athletes, <strong>Reg. 19.14</strong> applies regardless of local interpretation — a minor under 16 has not "represented" a country, period.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- =============== KEY QUESTIONS =============== -->
+<section id="questions">
+  <div class="container">
+    <h2><span class="num">06</span>Key Questions for World Sailing</h2>
+    <p class="sub">
+      These questions cannot be conclusively answered from the public bylaws and regulations alone.
+      They are the points that warrant clarification from World Sailing's Governance team before any specific
+      pathway decision is finalised.
+    </p>
+
+    <div class="qa">
+      <div class="qnum">1</div>
+      <div class="qbody">
+        <h4>Does an MNA independently control athlete participation outside Games environments?</h4>
+        <p><span class="conf open">Open</span> Public WS regulations describe the MNA as the recognised national authority and the entrant at WS events. They do not address whether an MNA's participation pathways (membership, domestic racing, selection for non-Games WS events) can be conditioned by an NOC's Games-level eligibility timeline. WS clarification: where does MNA autonomy end?</p>
+      </div>
+    </div>
+
+    <div class="qa">
+      <div class="qnum">2</div>
+      <div class="qbody">
+        <h4>Can an NOC's interpretation effectively control MNA participation pathways?</h4>
+        <p><span class="conf open">Open</span> VIOC §2.3(b) gives the NOC "exclusive authority for representation at the Olympic / Pan Am / CAC / Youth Olympic Games." Read narrowly, this is Games-only. Read broadly, it might be cited to condition MNA-internal participation. WS clarification: does WS recognise any extension of NOC authority beyond Games entry?</p>
+      </div>
+    </div>
+
+    <div class="qa">
+      <div class="qnum">3</div>
+      <div class="qbody">
+        <h4>Where does World Sailing authority begin and end relative to an MNA?</h4>
+        <p><span class="conf open">Open</span> WS Reg. 19.6 lists the events for which WS Eligibility is required. Outside those, the MNA's domestic authority is largely intact. WS clarification: in what scenarios can WS direct, override, or substitute an MNA's internal determination on athlete participation?</p>
+      </div>
+    </div>
+
+    <div class="qa">
+      <div class="qnum">4</div>
+      <div class="qbody">
+        <h4>For athletes under 18 with no senior representation history, how are transfer and residency situations handled?</h4>
+        <p><span class="conf open">Open</span> Reg. 19.14 confirms that under-16 competition does not constitute representation. For 16–17-year-olds with no representation history, the WS Reg. 19.15 transfer mechanics are conceptually moot (nothing to transfer from). WS clarification: confirm that an under-18 with no Reg. 19.10 representation record is unconstrained by Reg. 19.15 waiting periods at the WS-events layer.</p>
+      </div>
+    </div>
+
+    <div class="qa">
+      <div class="qnum">5</div>
+      <div class="qbody">
+        <h4>Can an athlete train, compete locally, compete internationally, and participate in WS events while completing residency timelines for Games eligibility?</h4>
+        <p><span class="conf open">Open</span> The architecture suggests yes — the sport chain (WS / MNA) and the Olympic chain (IOC / NOC) run in parallel, and an athlete's residency clock under an NOC's Games-eligibility provision does not, on its face, bar WS-event entry by the recognised MNA. WS clarification: please confirm in writing that the residency clock for an NOC's Games representation runs in parallel with — not as a precondition for — WS-event participation by the same athlete.</p>
+      </div>
+    </div>
+
+    <div class="qa">
+      <div class="qnum">6</div>
+      <div class="qbody">
+        <h4>What is the proper venue if an MNA and an NOC in the same territory hold conflicting interpretations of athlete eligibility?</h4>
+        <p><span class="conf open">Open</span> WS Reg. 19.18 places eligibility determinations at the WS Board. VIOC §10 routes disputes to the General Assembly and then to CAS. The IOC Rule 41 process routes to the IOC Executive Board for Games-level nationality. WS clarification: where there is a conflict <em>between</em> MNA and NOC on a sport-eligibility question, which forum is dispositive — and how does WS step in?</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============== SCENARIO =============== -->
+<section id="scenario">
+  <div class="container">
+    <h2><span class="num">07</span>Scenario Application — neutral first-principles read</h2>
+    <p class="sub">
+      The structure above is built to apply to any federation / country / age group. The section below applies that
+      same structure to a real-world fact pattern that motivated this work, without departing from the source documents.
+    </p>
+
+    <div class="scenario-card">
+      <h3>The fact pattern</h3>
+      <p>
+        A youth sailor (under 18) holds U.S. citizenship and is exploring participation under a different MNA / NOC pairing
+        within a U.S. territorial framework (the US Virgin Islands), where VISA is the WS-recognised MNA and VIOC is the
+        IOC-recognised NOC. The dispute concerns whether the athlete can train and compete inside the MNA structure
+        while residency timelines that may apply to Games representation are still running.
+      </p>
+    </div>
+
+    <div class="takeaways">
+      <div class="take">
+        <div class="head">A. Sport chain (MNA / WS) — what the documents say</div>
+        <p>VISA bylaws (§3.1, §4.1) admit clubs, organizations, and individual members without a citizenship or residency test inside the MNA. VISA's authority is to govern, promote, and arrange sailing in its jurisdiction (§3.1, §3.8) and to maintain Full Member status with World Sailing (§3.3, §3.5). On a plain reading, an athlete may become a VISA member and race in VISA-sanctioned events without first satisfying any Games-level residency clock.</p>
+      </div>
+
+      <div class="take">
+        <div class="head">B. Olympic chain (NOC / IOC) — what the documents say</div>
+        <p>VIOC §2.3(b) gives VIOC <em>exclusive authority for representation at the Olympic / Pan Am / CAC / Youth Olympic Games</em>. That list is bounded. VIOC §9.1(b) imposes a 3-year continuous residency requirement specifically <em>"to represent the Virgin Islands at"</em> those Games. §9.1(a) explicitly directs that <em>"The Executive Committee shall make provisions for those athletes under 18 years of age."</em></p>
+      </div>
+
+      <div class="take">
+        <div class="head">C. World Sailing — what is binding</div>
+        <p>WS Reg. 19.10 fixes the country a competitor represents at WS events as the country of the MNA that enters them. WS Reg. 19.14 confirms that <em>"a competitor shall not be regarded as having represented a country unless he is at least 16 years of age."</em> WS Reg. 19.15 imposes a 3-year transfer wait — which applies only where prior "representation" exists. For an under-16 with no prior representation, the transfer-waiting machinery has no anchor.</p>
+      </div>
+
+      <div class="take">
+        <div class="head">D. Where the two chains actually meet</div>
+        <p>The chains meet only at the Games entry stage (Stage 7 of the pathway). VIOC's Games-residency clock does not, on the face of the VIOC bylaws, condition MNA-level participation. Two interpretations are possible: a narrow read in which §2.3(b) is Games-only, and a broad read in which §2.3(b) is cited to gate MNA-pathway access. The bylaws themselves favour the narrow read; the broad read would need to be sourced from a separate VIOC interpretation or policy outside the published bylaws.</p>
+      </div>
+
+      <div class="take">
+        <div class="head">E. Practical implication</div>
+        <p>On the public documents as written, an under-18 athlete with no prior "represented country" record (under WS Reg. 19.14) can be a member of the recognised MNA, race in MNA-sanctioned events, race in WS events entered by the MNA, and accumulate residency toward VIOC's §9.1(b) Games-eligibility threshold <em>concurrently</em>. The Games-residency clock and the sport-pathway clock run in parallel; one is not a precondition for the other.</p>
+      </div>
+
+      <div class="take">
+        <div class="head">F. What remains uncertain</div>
+        <p>Whether VIOC has adopted any internal interpretation that extends §2.3(b) authority to non-Games competition; whether VISA has agreed to or contested such an interpretation; whether World Sailing has been asked to rule on the boundary. These are the open questions in §06 above. The honest answer is that the public bylaws of both organisations do not, by themselves, foreclose the sport-chain pathway — but a definitive read requires the written rulings, if any, that sit outside the bylaws.</p>
+      </div>
+    </div>
+
+    <p class="small" style="margin-top:18px">
+      The above is a structural read of public governance documents only. It is not legal advice. It does not name
+      individuals. It is meant to surface the questions that, once answered, allow the right governance body to
+      decide a specific case under the right rule.
+    </p>
+  </div>
+</section>
+
+<!-- =============== SOURCES =============== -->
+<section id="sources">
+  <div class="container">
+    <h2><span class="num">08</span>Primary Sources</h2>
+    <p class="sub">Every "Confirmed" claim above maps to one of these documents. Where a public source could not be retrieved in clean form, the claim is marked Common Practice or Open.</p>
+    <ul style="font-size: 13.5px; line-height: 1.8; color: var(--ink-soft); padding-left: 18px;">
+      <li><strong>VIOC Bylaws / Constitution</strong> — Revised 25 Sept 2016; certified 10 July 2021. Articles I–XII. Particularly §1.1, §2.3(b), §3.1, §9.1, §10.1.</li>
+      <li><strong>VISA Bylaws</strong> — Virgin Islands Sailing Association. §3.1, §3.3, §3.5, §3.7, §3.8, §4.1, §8.2(e). <a href="https://virginislandssailingassociation.com/visa/by-laws/">virginislandssailingassociation.com/visa/by-laws/</a></li>
+      <li><strong>World Sailing Regulation 19 — Eligibility Code (2021 / 2024 editions)</strong>. Clauses 19.4, 19.6, 19.8, 19.10, 19.11, 19.12, 19.14, 19.15, 19.18.</li>
+      <li><strong>IOC Olympic Charter — Rule 41 and its Bye-law</strong>. Nationality of competitors; 3-year waiting period; IOC Executive Board waiver authority.</li>
+      <li><strong>Panam Sports Constitution §34.4–34.7</strong>. Pan American Games nationality rules.</li>
+      <li><strong>2026 Youth Sailing World Championships — Notice of Race</strong> (issued 13 March 2026). §3.1, §3.5, §3.6, §3.7.</li>
+      <li><strong>USOPC "Rule 41 Guidelines &amp; U.S. Citizenship Requirements"</strong>. Application of IOC / IPC / Panam Sports nationality rules and U.S. citizenship requirements.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    Built from primary governance documents. Structural read only — not legal advice. Last compiled May 2026.
+  </div>
+</footer>
+
+</body>
+</html>

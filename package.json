@@ -1,0 +1,8 @@
+{
+  "name": "sailing-governance",
+  "version": "1.0.0",
+  "description": "Governance flow map: World Sailing, MNAs, NOCs, IOC, Continental Bodies",
+  "scripts": {
+    "start": "npx serve -s . -l $PORT"
+  }
+}
